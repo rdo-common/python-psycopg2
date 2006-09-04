@@ -7,8 +7,8 @@
 
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
-Version:	2.0.3
-Release:	3%{?dist}
+Version:	2.0.5.1
+Release:	1%{?dist}
 Source0:	http://initd.org/pub/software/psycopg/psycopg2-%{version}.tar.gz
 License:	GPL (with Exceptions)
 Group:		Applications/Databases
@@ -84,6 +84,9 @@ rm -rf %{buildroot}
 %{ZPsycopgDAdir}/icons/*
 
 %changelog
+* Mon Sep 4 2006 - Devrim GUNDUZ <devrim@commandprompt.com> 2.0.5.1-1
+- Update to 2.0.5.1
+
 * Sun Aug 6 2006 - Devrim GUNDUZ <devrim@commandprompt.com> 2.0.3-3
 - Fixed zope package dependencies and macro definition, per bugzilla review (#199784)
 - Fixed zope package directory ownership, per bugzilla review (#199784)

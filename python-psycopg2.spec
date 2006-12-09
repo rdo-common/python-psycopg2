@@ -8,7 +8,7 @@
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
 Version:	2.0.5.1
-Release:	6%{?dist}
+Release:	7%{?dist}
 Source0:	http://initd.org/pub/software/psycopg/psycopg2-%{version}.tar.gz
 License:	GPL (with Exceptions)
 Group:		Applications/Databases
@@ -84,7 +84,7 @@ rm -rf %{buildroot}
 %{ZPsycopgDAdir}/icons/*
 
 %changelog
-* Wed Dec 6 2006 - Devrim GUNDUZ <devrim@commandprompt.com> 2.0.5.1-6
+* Wed Dec 6 2006 - Devrim GUNDUZ <devrim@commandprompt.com> 2.0.5.1-7
 - Rebuilt
 
 * Wed Dec 6 2006 - Devrim GUNDUZ <devrim@commandprompt.com> 2.0.5.1-5

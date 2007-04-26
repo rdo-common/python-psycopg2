@@ -2,13 +2,13 @@
 %{expand: %%define pyver %(python -c 'import sys;print(sys.version[0:3])')}
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
-%define ZPsycopgDAdir %{_localstatedir}/lib/zope/Products/ZPsycopgDA
+#%define ZPsycopgDAdir %{_localstatedir}/lib/zope/Products/ZPsycopgDA
 
 
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
 Version:	2.0.5.1
-Release:	7%{?dist}
+Release:	8%{?dist}
 Source0:	http://initd.org/pub/software/psycopg/psycopg2-%{version}.tar.gz
 License:	GPL (with Exceptions)
 Group:		Applications/Databases
@@ -16,6 +16,8 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Url:		http://www.initd.org/software/initd/psycopg
 BuildRequires:	python-devel postgresql-devel
 Requires:	postgresql-libs
+
+Obsoletes:	python-psycopg2-zope <= 2.0.5.1-8
 
 %description
 psycopg is a PostgreSQL database adapter for the Python programming
@@ -33,13 +35,13 @@ Requires:	%{name} = %{version}-%{release}
 Documentation and example files for the psycopg python PostgreSQL
 database adapter.
 
-%package zope
-Summary:	Zope Database Adapter ZPsycopgDA
-Group:		Applications/Databases
-Requires:	%{name} = %{version}-%{release} zope
+#%package zope
+#Summary:	Zope Database Adapter ZPsycopgDA
+#Group:		Applications/Databases
+#Requires:	%{name} = %{version}-%{release} zope
 
-%description zope
-Zope Database Adapter for PostgreSQL, called ZPsycopgDA
+#%description zope
+#Zope Database Adapter for PostgreSQL, called ZPsycopgDA
 
 %prep
 %setup -q -n psycopg2-%{version}
@@ -55,8 +57,8 @@ rm -Rf %{buildroot}
 mkdir -p %{buildroot}%{python_sitearch}/psycopg2
 python setup.py install --no-compile --root %{buildroot}
 
-install -d %{buildroot}%{ZPsycopgDAdir}
-cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
+#install -d %{buildroot}%{ZPsycopgDAdir}
+#cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 
 %clean
 rm -rf %{buildroot}
@@ -74,16 +76,20 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %doc doc examples/
 
-%files zope
-%defattr(-,root,root)
-%dir %{ZPsycopgDAdir}
-%{ZPsycopgDAdir}/*.py
-%{ZPsycopgDAdir}/*.pyo
-%{ZPsycopgDAdir}/*.pyc
-%{ZPsycopgDAdir}/dtml/*
-%{ZPsycopgDAdir}/icons/*
+#%files zope
+#%defattr(-,root,root)
+#%dir %{ZPsycopgDAdir}
+#%{ZPsycopgDAdir}/*.py
+#%{ZPsycopgDAdir}/*.pyo
+#%{ZPsycopgDAdir}/*.pyc
+#%{ZPsycopgDAdir}/dtml/*
+#%{ZPsycopgDAdir}/icons/*
 
 %changelog
+
+* Thu Apr 26 2007 - Devrim GUNDUZ <devrim@commandprompt.com> 2.0.5.1-8
+- Disabled zope package temporarily.
+
 * Wed Dec 6 2006 - Devrim GUNDUZ <devrim@commandprompt.com> 2.0.5.1-7
 - Rebuilt
 

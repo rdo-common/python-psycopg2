@@ -8,7 +8,7 @@
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
 Version:	2.0.6
-Release:	2%{?dist}
+Release:	3%{?dist}
 Source0:	http://initd.org/pub/software/psycopg/psycopg2-%{version}.tar.gz
 License:	GPL (with Exceptions)
 Group:		Applications/Databases
@@ -71,6 +71,7 @@ rm -rf %{buildroot}
 %{python_sitearch}/psycopg2/*.pyc
 %{python_sitearch}/psycopg2/*.so
 %{python_sitearch}/psycopg2/*.pyo
+%{python_sitearch}/psycopg2-%{version}-py%{pyver}.egg-info
 
 %files doc
 %defattr(-,root,root)
@@ -86,9 +87,11 @@ rm -rf %{buildroot}
 #%{ZPsycopgDAdir}/icons/*
 
 %changelog
+* Thu Jan 3 2008 - Devrim GUNDUZ <devrim@commandprompt.com> 2.0.6-3
+- Rebuild for rawhide changes
+
 * Tue Aug 28 2007 Fedora Release Engineering <rel-eng at fedoraproject dot org> - 2.0.6-2
 - Rebuild for selinux ppc32 issue.
-
 
 * Fri Jun 15 2007 - Devrim GUNDUZ <devrim@commandprompt.com> 2.0.6-1
 - Update to 2.0.6

@@ -8,9 +8,10 @@
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
 Version:	2.0.7
-Release:	1%{?dist}
+Release:	2%{?dist}
 Source0:	http://initd.org/pub/software/psycopg/psycopg2-%{version}.tar.gz
-License:	GPL (with Exceptions)
+# The exceptions allow linking to OpenSSL and PostgreSQL's libpq
+License:	GPLv2+ with exceptions
 Group:		Applications/Databases
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Url:		http://www.initd.org/software/initd/psycopg
@@ -37,6 +38,8 @@ database adapter.
 
 #%package zope
 #Summary:	Zope Database Adapter ZPsycopgDA
+# The exceptions allow linking to OpenSSL and PostgreSQL's libpq
+#License:	GPLv2+ with exceptions or ZPLv1.0
 #Group:		Applications/Databases
 #Requires:	%{name} = %{version}-%{release} zope
 
@@ -87,6 +90,9 @@ rm -rf %{buildroot}
 #%{ZPsycopgDAdir}/icons/*
 
 %changelog
+* Thu May 29 2008 Todd Zullinger <tmz@pobox.com> - 2.0.7-2
+- fix license tags
+
 * Wed Apr 30 2008 Devrim GUNDUZ <devrim@commandprompt.com> 2.0.7-1
 - Update to 2.0.7
 

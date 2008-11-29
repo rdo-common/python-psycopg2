@@ -8,7 +8,7 @@
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
 Version:	2.0.7
-Release:	2%{?dist}
+Release:	3%{?dist}
 Source0:	http://initd.org/pub/software/psycopg/psycopg2-%{version}.tar.gz
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	GPLv2+ with exceptions
@@ -90,6 +90,9 @@ rm -rf %{buildroot}
 #%{ZPsycopgDAdir}/icons/*
 
 %changelog
+* Sat Nov 29 2008 Ignacio Vazquez-Abrams <ivazqueznet+rpm@gmail.com> - 2.0.7-3
+- Rebuild for Python 2.6
+
 * Thu May 29 2008 Todd Zullinger <tmz@pobox.com> - 2.0.7-2
 - fix license tags
 

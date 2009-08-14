@@ -7,8 +7,8 @@
 
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
-Version:	2.0.11
-Release:	2%{?dist}
+Version:	2.0.12
+Release:	1%{?dist}
 Source0:	http://initd.org/pub/software/psycopg/psycopg2-%{version}.tar.gz
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	GPLv2+ with exceptions
@@ -90,6 +90,9 @@ rm -rf %{buildroot}
 #%{ZPsycopgDAdir}/icons/*
 
 %changelog
+* Fri Aug 14 2009 Devrim GUNDUZ <devrim@gunduz.org> - 2.0.12-1
+- Update to 2.0.12
+
 * Sun Jul 26 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.11-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
 

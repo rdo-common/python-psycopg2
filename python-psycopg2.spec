@@ -10,17 +10,17 @@
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
 Version:	2.0.13
-Release:	1%{?dist}
+Release:	2%{?dist}
 Source0:	http://initd.org/pub/software/psycopg/psycopg2-%{version}.tar.gz
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	GPLv2+ with exceptions
 Group:		Applications/Databases
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Url:		http://www.initd.org/software/initd/psycopg
-BuildRequires:	python-devel postgresql-devel
-Requires:	postgresql-libs
 
-Obsoletes:	python-psycopg2-zope <= 2.0.5.1-8
+BuildRequires:	python-devel postgresql-devel
+
+Conflicts:	python-psycopg2-zope < %{version}
 
 %description
 psycopg is a PostgreSQL database adapter for the Python programming
@@ -92,6 +92,10 @@ rm -rf %{buildroot}
 #%{ZPsycopgDAdir}/icons/*
 
 %changelog
+* Sun Jan 24 2010 Tom Lane <tgl@redhat.com> 2.0.13-2
+- Fix rpmlint complaints: remove unneeded explicit Requires:, use Conflicts:
+  instead of bogus Obsoletes: to indicate lack of zope subpackage
+
 * Sun Oct 18 2009 Devrim GUNDUZ <devrim@gunduz.org> - 2.0.13-1
 - Update to 2.0.13
 

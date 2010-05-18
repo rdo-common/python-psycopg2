@@ -9,7 +9,7 @@
 
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
-Version:	2.0.14
+Version:	2.2.1
 Release:	1%{?dist}
 Source0:	http://initd.org/pub/software/psycopg/psycopg2-%{version}.tar.gz
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
@@ -28,6 +28,15 @@ language (just like pygresql and popy.) It was written from scratch
 with the aim of being very small and fast, and stable as a rock. The 
 main advantages of psycopg are that it supports the full Python
 DBAPI-2.0 and being thread safe at level 2.
+
+This is the first release of the new 2.2 series, supporting not just
+one but two different ways of executing asynchronous queries, thanks to
+Jan and Daniele (with a little help from me and others, but they did
+99% of the work so they deserve their names here in the news.)
+
+psycopg now supports both classic select() loops and "green" coroutine
+libraries. It is all in the documentation, so just point your browser to
+doc/html/advanced.html.
 
 %package doc
 Summary:	Documentation for psycopg python PostgreSQL database adapter
@@ -92,6 +101,12 @@ rm -rf %{buildroot}
 #%{ZPsycopgDAdir}/icons/*
 
 %changelog
+* Tue May 18 2010 Devrim GUNDUZ <devrim@gunduz.org> - 2.2.1-1
+- Update to 2.2.1
+- Improve description for 2.2 features.
+- Changelog for 2.2.0 is: 
+   http://initd.org/pub/software/psycopg/ChangeLog-2.2
+
 * Wed Mar 17 2010 Devrim GUNDUZ <devrim@gunduz.org> - 2.0.14-1
 - Update to 2.0.14
 - Update license (upstream switched to LGPL3)

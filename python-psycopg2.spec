@@ -101,7 +101,7 @@ rm -rf %{buildroot}
 #%{ZPsycopgDAdir}/icons/*
 
 %changelog
-* Tue Jul 208 2010 Devrim GUNDUZ <devrim@gunduz.org> - 2.2.2-1
+* Tue Jul 20 2010 Devrim GUNDUZ <devrim@gunduz.org> - 2.2.2-1
 - Update to 2.2.2
 
 * Tue May 18 2010 Devrim GUNDUZ <devrim@gunduz.org> - 2.2.1-1

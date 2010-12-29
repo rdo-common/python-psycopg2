@@ -4,13 +4,16 @@
 
 # Python 2.5+ is not supported by Zope, so it does not exist in
 # recent Fedora releases. That's why zope subpackage is disabled.
-#%define ZPsycopgDAdir %{_localstatedir}/lib/zope/Products/ZPsycopgDA
+%global zope 0
+%if %zope
+%global ZPsycopgDAdir %{_localstatedir}/lib/zope/Products/ZPsycopgDA
+%endif
 
 
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
-Version:	2.2.2
-Release:	3%{?dist}
+Version:	2.3.2
+Release:	1%{?dist}
 Source0:	http://initd.org/pub/software/psycopg/psycopg2-%{version}.tar.gz
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
@@ -47,32 +50,44 @@ Requires:	%{name} = %{version}-%{release}
 Documentation and example files for the psycopg python PostgreSQL
 database adapter.
 
-#%package zope
-#Summary:	Zope Database Adapter ZPsycopgDA
+%if %zope
+%package zope
+Summary:	Zope Database Adapter ZPsycopgDA
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
-#License:	GPLv2+ with exceptions or ZPLv1.0
-#Group:		Applications/Databases
-#Requires:	%{name} = %{version}-%{release} zope
+License:	GPLv2+ with exceptions or ZPLv1.0
+Group:		Applications/Databases
+Requires:	%{name} = %{version}-%{release} zope
 
-#%description zope
-#Zope Database Adapter for PostgreSQL, called ZPsycopgDA
+%description zope
+Zope Database Adapter for PostgreSQL, called ZPsycopgDA
+%endif
 
 %prep
 %setup -q -n psycopg2-%{version}
 
 %build
 python setup.py build
+
 # Fix for wrong-file-end-of-line-encoding problem; upstream also must fix this.
 for i in `find doc -iname "*.html"`; do sed -i 's/\r//' $i; done
 for i in `find doc -iname "*.css"`; do sed -i 's/\r//' $i; done
 
+# Get rid of a "hidden" file that rpmlint complains about
+rm -f doc/html/.buildinfo
+
 %install
-rm -Rf %{buildroot}
+rm -rf %{buildroot}
+
 mkdir -p %{buildroot}%{python_sitearch}/psycopg2
 python setup.py install --no-compile --root %{buildroot}
 
-#install -d %{buildroot}%{ZPsycopgDAdir}
-#cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
+# We're not currently interested in packaging the test suite.
+rm -rf %{buildroot}%{python_sitearch}/psycopg2/tests
+
+%if %zope
+install -d %{buildroot}%{ZPsycopgDAdir}
+cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
+%endif
 
 %clean
 rm -rf %{buildroot}
@@ -91,16 +106,22 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %doc doc examples/
 
-#%files zope
-#%defattr(-,root,root)
-#%dir %{ZPsycopgDAdir}
-#%{ZPsycopgDAdir}/*.py
-#%{ZPsycopgDAdir}/*.pyo
-#%{ZPsycopgDAdir}/*.pyc
-#%{ZPsycopgDAdir}/dtml/*
-#%{ZPsycopgDAdir}/icons/*
+%if %zope
+%files zope
+%defattr(-,root,root)
+%dir %{ZPsycopgDAdir}
+%{ZPsycopgDAdir}/*.py
+%{ZPsycopgDAdir}/*.pyo
+%{ZPsycopgDAdir}/*.pyc
+%{ZPsycopgDAdir}/dtml/*
+%{ZPsycopgDAdir}/icons/*
+%endif
 
 %changelog
+* Wed Dec 29 2010 Tom Lane <tgl@redhat.com> 2.3.2-1
+- Update to 2.3.2
+- Clean up a few rpmlint warnings
+
 * Fri Dec 03 2010 Jason L Tibbitts III <tibbs@math.uh.edu> - 2.2.2-3
 - Fix incorrect (and invalid) License: tag.
 

@@ -1,6 +1,12 @@
+%global python_runtimes  python python-debug python3 python3.2dmu
+# FIXME "python3.2dmu" should just be "python3-debug"
+
 # Python major version.
 %{expand: %%define pyver %(python -c 'import sys;print(sys.version[0:3])')}
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
+
+%{expand: %%define py3ver %(python3 -c 'import sys;print(sys.version[0:3])')}
+
 
 # Python 2.5+ is not supported by Zope, so it does not exist in
 # recent Fedora releases. That's why zope subpackage is disabled.
@@ -12,16 +18,21 @@
 
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
-Version:	2.3.2
-Release:	2%{?dist}
-Source0:	http://initd.org/pub/software/psycopg/psycopg2-%{version}.tar.gz
+Version:	2.4
+%global alphatag beta2
+Release:	0.%{alphatag}%{?dist}
+Source0:	http://initd.org/pub/software/psycopg/psycopg2-%{version}-%{alphatag}.tar.gz
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
 Group:		Applications/Databases
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Url:		http://www.initd.org/software/initd/psycopg
 
-BuildRequires:	python-devel postgresql-devel
+BuildRequires:	postgresql-devel
+BuildRequires:	python-devel
+BuildRequires:	python-debug
+BuildRequires:	python3-devel
+BuildRequires:	python3-debug
 
 Conflicts:	python-psycopg2-zope < %{version}
 
@@ -40,6 +51,31 @@ Jan and Daniele (with a little help from me and others, but they did
 psycopg now supports both classic select() loops and "green" coroutine
 libraries. It is all in the documentation, so just point your browser to
 doc/html/advanced.html.
+
+%package debug
+Summary: A PostgreSQL database adapter for Python 2 (debug build)
+# Require the base package, as we're sharing .py/.pyc files:
+Requires: %{name}
+
+%description debug
+This is a build of the psycopg PostgreSQL database adapter for the debug
+build of Python 2
+
+%package -n python3-psycopg2
+Summary: A PostgreSQL database adapter for Python 3
+
+%description  -n python3-psycopg2
+This is a build of the psycopg PostgreSQL database adapter for the Python 3
+
+%package -n python3-psycopg2-debug
+Summary: A PostgreSQL database adapter for Python 3 (debug build)
+
+# Require base python 3 package, as we're sharing .py/.pyc files:
+Requires: python3-psycopg2
+
+%description -n python3-psycopg2-debug
+This is a build of the psycopg PostgreSQL database adapter for the debug
+build of Python 3
 
 %package doc
 Summary:	Documentation for psycopg python PostgreSQL database adapter
@@ -63,10 +99,12 @@ Zope Database Adapter for PostgreSQL, called ZPsycopgDA
 %endif
 
 %prep
-%setup -q -n psycopg2-%{version}
+%setup -q -n psycopg2-%{version}-%{alphatag}
 
 %build
-python setup.py build
+for python in %{python_runtimes} ; do
+  $python setup.py build
+done
 
 # Fix for wrong-file-end-of-line-encoding problem; upstream also must fix this.
 for i in `find doc -iname "*.html"`; do sed -i 's/\r//' $i; done
@@ -76,13 +114,23 @@ for i in `find doc -iname "*.css"`; do sed -i 's/\r//' $i; done
 rm -f doc/html/.buildinfo
 
 %install
+
+DoInstall() {
+  PythonBinary=$1
+
+  Python_SiteArch=$($PythonBinary -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")
+
+  mkdir -p %{buildroot}$Python_SiteArch/psycopg2
+  $PythonBinary setup.py install --no-compile --root %{buildroot}
+
+  # We're not currently interested in packaging the test suite.
+  rm -rf %{buildroot}$Python_SiteArch/psycopg2/tests
+}
+
 rm -rf %{buildroot}
-
-mkdir -p %{buildroot}%{python_sitearch}/psycopg2
-python setup.py install --no-compile --root %{buildroot}
-
-# We're not currently interested in packaging the test suite.
-rm -rf %{buildroot}%{python_sitearch}/psycopg2/tests
+for python in %{python_runtimes} ; do
+  DoInstall $python
+done
 
 %if %zope
 install -d %{buildroot}%{ZPsycopgDAdir}
@@ -98,9 +146,31 @@ rm -rf %{buildroot}
 %dir %{python_sitearch}/psycopg2
 %{python_sitearch}/psycopg2/*.py
 %{python_sitearch}/psycopg2/*.pyc
-%{python_sitearch}/psycopg2/*.so
+%{python_sitearch}/psycopg2/_psycopg.so
 %{python_sitearch}/psycopg2/*.pyo
-%{python_sitearch}/psycopg2-%{version}-py%{pyver}.egg-info
+%{python_sitearch}/psycopg2-%{version}_%{alphatag}-py%{pyver}.egg-info
+
+%files debug
+%defattr(-,root,root)
+%doc LICENSE
+%{python_sitearch}/psycopg2/_psycopg_d.so
+
+%files -n python3-psycopg2
+%defattr(-,root,root)
+%doc AUTHORS ChangeLog INSTALL LICENSE README
+%dir %{python3_sitearch}/psycopg2
+%{python3_sitearch}/psycopg2/*.py
+%{python3_sitearch}/psycopg2/_psycopg.cpython-3?mu.so
+%dir %{python3_sitearch}/psycopg2/__pycache__
+%dir %{python3_sitearch}/psycopg2/__pycache__/*.pyc
+%dir %{python3_sitearch}/psycopg2/__pycache__/*.pyo
+%{python3_sitearch}/psycopg2-%{version}_%{alphatag}-py%{py3ver}.egg-info
+
+%files -n python3-psycopg2-debug
+%defattr(-,root,root)
+%doc LICENSE
+%{python3_sitearch}/psycopg2/_psycopg.cpython-3?dmu.so
+
 
 %files doc
 %defattr(-,root,root)
@@ -118,6 +188,10 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Thu Feb 10 2011 David Malcolm <dmalcolm@redhat.com> - 2.4-0.beta2
+- 2.4.0-beta2
+- add python 2 debug, python3 (optimized) and python3-debug subpackages
+
 * Tue Feb 08 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.3.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
 

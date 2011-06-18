@@ -18,15 +18,14 @@
 
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
-Version:	2.4
-%global alphatag beta2
-Release:	0.%{alphatag}%{?dist}
-Source0:	http://initd.org/pub/software/psycopg/psycopg2-%{version}-%{alphatag}.tar.gz
+Version:	2.4.2
+Release:	1%{?dist}
+Source0:	http://initd.org/psycopg/tarballs/PSYCOPG-2-4/psycopg2-%{version}.tar.gz
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
 Group:		Applications/Databases
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Url:		http://www.initd.org/software/initd/psycopg
+Url:		http://www.initd.org/psycopg/
 
 BuildRequires:	postgresql-devel
 BuildRequires:	python-devel
@@ -37,45 +36,34 @@ BuildRequires:	python3-debug
 Conflicts:	python-psycopg2-zope < %{version}
 
 %description
-psycopg is a PostgreSQL database adapter for the Python programming
-language (just like pygresql and popy.) It was written from scratch 
-with the aim of being very small and fast, and stable as a rock. The 
-main advantages of psycopg are that it supports the full Python
-DBAPI-2.0 and being thread safe at level 2.
-
-This is the first release of the new 2.2 series, supporting not just
-one but two different ways of executing asynchronous queries, thanks to
-Jan and Daniele (with a little help from me and others, but they did
-99% of the work so they deserve their names here in the news.)
-
-psycopg now supports both classic select() loops and "green" coroutine
-libraries. It is all in the documentation, so just point your browser to
-doc/html/advanced.html.
+Psycopg is the most popular PostgreSQL adapter for the Python
+programming language. At its core it fully implements the Python DB
+API 2.0 specifications. Several extensions allow access to many of the
+features offered by PostgreSQL.
 
 %package debug
 Summary: A PostgreSQL database adapter for Python 2 (debug build)
 # Require the base package, as we're sharing .py/.pyc files:
-Requires: %{name}
+Requires:	%{name} = %{version}-%{release}
 
 %description debug
 This is a build of the psycopg PostgreSQL database adapter for the debug
-build of Python 2
+build of Python 2.
 
 %package -n python3-psycopg2
 Summary: A PostgreSQL database adapter for Python 3
 
 %description  -n python3-psycopg2
-This is a build of the psycopg PostgreSQL database adapter for the Python 3
+This is a build of the psycopg PostgreSQL database adapter for Python 3.
 
 %package -n python3-psycopg2-debug
 Summary: A PostgreSQL database adapter for Python 3 (debug build)
-
 # Require base python 3 package, as we're sharing .py/.pyc files:
-Requires: python3-psycopg2
+Requires:	python3-psycopg2 = %{version}-%{release}
 
 %description -n python3-psycopg2-debug
 This is a build of the psycopg PostgreSQL database adapter for the debug
-build of Python 3
+build of Python 3.
 
 %package doc
 Summary:	Documentation for psycopg python PostgreSQL database adapter
@@ -92,14 +80,15 @@ Summary:	Zope Database Adapter ZPsycopgDA
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	GPLv2+ with exceptions or ZPLv1.0
 Group:		Applications/Databases
-Requires:	%{name} = %{version}-%{release} zope
+Requires:	%{name} = %{version}-%{release}
+Requires:	zope
 
 %description zope
 Zope Database Adapter for PostgreSQL, called ZPsycopgDA
 %endif
 
 %prep
-%setup -q -n psycopg2-%{version}-%{alphatag}
+%setup -q -n psycopg2-%{version}
 
 %build
 for python in %{python_runtimes} ; do
@@ -142,13 +131,13 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc AUTHORS ChangeLog INSTALL LICENSE README
+%doc AUTHORS ChangeLog INSTALL LICENSE NEWS README
 %dir %{python_sitearch}/psycopg2
 %{python_sitearch}/psycopg2/*.py
 %{python_sitearch}/psycopg2/*.pyc
 %{python_sitearch}/psycopg2/_psycopg.so
 %{python_sitearch}/psycopg2/*.pyo
-%{python_sitearch}/psycopg2-%{version}_%{alphatag}-py%{pyver}.egg-info
+%{python_sitearch}/psycopg2-%{version}-py%{pyver}.egg-info
 
 %files debug
 %defattr(-,root,root)
@@ -157,14 +146,14 @@ rm -rf %{buildroot}
 
 %files -n python3-psycopg2
 %defattr(-,root,root)
-%doc AUTHORS ChangeLog INSTALL LICENSE README
+%doc AUTHORS ChangeLog INSTALL LICENSE NEWS README
 %dir %{python3_sitearch}/psycopg2
 %{python3_sitearch}/psycopg2/*.py
 %{python3_sitearch}/psycopg2/_psycopg.cpython-3?mu.so
 %dir %{python3_sitearch}/psycopg2/__pycache__
 %dir %{python3_sitearch}/psycopg2/__pycache__/*.pyc
 %dir %{python3_sitearch}/psycopg2/__pycache__/*.pyo
-%{python3_sitearch}/psycopg2-%{version}_%{alphatag}-py%{py3ver}.egg-info
+%{python3_sitearch}/psycopg2-%{version}-py%{py3ver}.egg-info
 
 %files -n python3-psycopg2-debug
 %defattr(-,root,root)
@@ -188,6 +177,11 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Sat Jun 18 2011 Tom Lane <tgl@redhat.com> 2.4.2-1
+- Update to 2.4.2
+Related: #711095
+- Some neatnik specfile cleanups
+
 * Thu Feb 10 2011 David Malcolm <dmalcolm@redhat.com> - 2.4-0.beta2
 - 2.4.0-beta2
 - add python 2 debug, python3 (optimized) and python3-debug subpackages

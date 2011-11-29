@@ -19,7 +19,7 @@
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
 Version:	2.4.2
-Release:	1%{?dist}
+Release:	2%{?dist}
 Source0:	http://initd.org/psycopg/tarballs/PSYCOPG-2-4/psycopg2-%{version}.tar.gz
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
@@ -151,8 +151,8 @@ rm -rf %{buildroot}
 %{python3_sitearch}/psycopg2/*.py
 %{python3_sitearch}/psycopg2/_psycopg.cpython-3?mu.so
 %dir %{python3_sitearch}/psycopg2/__pycache__
-%dir %{python3_sitearch}/psycopg2/__pycache__/*.pyc
-%dir %{python3_sitearch}/psycopg2/__pycache__/*.pyo
+%{python3_sitearch}/psycopg2/__pycache__/*.pyc
+%{python3_sitearch}/psycopg2/__pycache__/*.pyo
 %{python3_sitearch}/psycopg2-%{version}-py%{py3ver}.egg-info
 
 %files -n python3-psycopg2-debug
@@ -177,6 +177,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Tue Nov 29 2011 Tom Lane <tgl@redhat.com> 2.4.2-2
+- Fix mistaken %%dir marking on python3 files, per Dan Horak
+
 * Sat Jun 18 2011 Tom Lane <tgl@redhat.com> 2.4.2-1
 - Update to 2.4.2
 Related: #711095

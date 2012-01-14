@@ -19,7 +19,7 @@
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
 Version:	2.4.2
-Release:	2%{?dist}
+Release:	3%{?dist}
 Source0:	http://initd.org/psycopg/tarballs/PSYCOPG-2-4/psycopg2-%{version}.tar.gz
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
@@ -177,6 +177,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Sat Jan 14 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.4.2-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
+
 * Tue Nov 29 2011 Tom Lane <tgl@redhat.com> 2.4.2-2
 - Fix mistaken %%dir marking on python3 files, per Dan Horak
 

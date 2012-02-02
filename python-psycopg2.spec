@@ -18,20 +18,21 @@
 
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
-Version:	2.4.2
-Release:	3%{?dist}
-Source0:	http://initd.org/psycopg/tarballs/PSYCOPG-2-4/psycopg2-%{version}.tar.gz
+Version:	2.4.4
+Release:	1%{?dist}
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
 Group:		Applications/Databases
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Url:		http://www.initd.org/psycopg/
+
+Source0:	http://initd.org/psycopg/tarballs/PSYCOPG-2-4/psycopg2-%{version}.tar.gz
 
 BuildRequires:	postgresql-devel
 BuildRequires:	python-devel
 BuildRequires:	python-debug
 BuildRequires:	python3-devel
 BuildRequires:	python3-debug
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Conflicts:	python-psycopg2-zope < %{version}
 
@@ -131,7 +132,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc AUTHORS ChangeLog INSTALL LICENSE NEWS README
+%doc AUTHORS ChangeLog LICENSE NEWS README
 %dir %{python_sitearch}/psycopg2
 %{python_sitearch}/psycopg2/*.py
 %{python_sitearch}/psycopg2/*.pyc
@@ -146,7 +147,7 @@ rm -rf %{buildroot}
 
 %files -n python3-psycopg2
 %defattr(-,root,root)
-%doc AUTHORS ChangeLog INSTALL LICENSE NEWS README
+%doc AUTHORS ChangeLog LICENSE NEWS README
 %dir %{python3_sitearch}/psycopg2
 %{python3_sitearch}/psycopg2/*.py
 %{python3_sitearch}/psycopg2/_psycopg.cpython-3?mu.so
@@ -177,6 +178,10 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Thu Feb  2 2012 Tom Lane <tgl@redhat.com> 2.4.4-1
+- Update to 2.4.4
+- More specfile neatnik-ism
+
 * Sat Jan 14 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.4.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
 

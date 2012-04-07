@@ -18,7 +18,7 @@
 
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
-Version:	2.4.4
+Version:	2.4.5
 Release:	1%{?dist}
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
@@ -178,6 +178,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Sat Apr  7 2012 Tom Lane <tgl@redhat.com> 2.4.5-1
+- Update to 2.4.5
+
 * Thu Feb  2 2012 Tom Lane <tgl@redhat.com> 2.4.4-1
 - Update to 2.4.4
 - More specfile neatnik-ism

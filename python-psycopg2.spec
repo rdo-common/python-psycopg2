@@ -1,11 +1,21 @@
+%if 0%{?fedora} > 12
+%global with_python3 1
+%endif
+
+%if 0%{?with_python3}
 %global python_runtimes  python python-debug python3 python3.2dmu
 # FIXME "python3.2dmu" should just be "python3-debug"
+%else
+%global python_runtimes  python python-debug
+%endif # with_python3
 
 # Python major version.
 %{expand: %%define pyver %(python -c 'import sys;print(sys.version[0:3])')}
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
+%if 0%{?with_python3}
 %{expand: %%define py3ver %(python3 -c 'import sys;print(sys.version[0:3])')}
+%endif # with_python3
 
 
 # Python 2.5+ is not supported by Zope, so it does not exist in
@@ -19,7 +29,7 @@
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
 Version:	2.4.5
-Release:	2%{?dist}
+Release:	3%{?dist}
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
 Group:		Applications/Databases
@@ -51,6 +61,7 @@ Requires:	%{name} = %{version}-%{release}
 This is a build of the psycopg PostgreSQL database adapter for the debug
 build of Python 2.
 
+%if 0%{?with_python3}
 %package -n python3-psycopg2
 Summary: A PostgreSQL database adapter for Python 3
 
@@ -65,6 +76,7 @@ Requires:	python3-psycopg2 = %{version}-%{release}
 %description -n python3-psycopg2-debug
 This is a build of the psycopg PostgreSQL database adapter for the debug
 build of Python 3.
+%endif # with_python3
 
 %package doc
 Summary:	Documentation for psycopg python PostgreSQL database adapter
@@ -145,6 +157,7 @@ rm -rf %{buildroot}
 %doc LICENSE
 %{python_sitearch}/psycopg2/_psycopg_d.so
 
+%if 0%{?with_python3}
 %files -n python3-psycopg2
 %defattr(-,root,root)
 %doc AUTHORS ChangeLog LICENSE NEWS README
@@ -160,6 +173,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %doc LICENSE
 %{python3_sitearch}/psycopg2/_psycopg.cpython-3?dmu.so
+%endif # with_python3
 
 
 %files doc
@@ -178,6 +192,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Fri Aug  3 2012 David Malcolm <dmalcolm@redhat.com> - 2.4.5-3
+- add with_python3 conditional
+
 * Sat Jul 21 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.4.5-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
 

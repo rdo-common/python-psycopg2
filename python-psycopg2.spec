@@ -3,8 +3,7 @@
 %endif
 
 %if 0%{?with_python3}
-%global python_runtimes  python python-debug python3 python3.2dmu
-# FIXME "python3.2dmu" should just be "python3-debug"
+%global python_runtimes  python python-debug python3 python3-debug
 %else
 %global python_runtimes  python python-debug
 %endif # with_python3
@@ -29,7 +28,7 @@
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
 Version:	2.4.5
-Release:	3%{?dist}
+Release:	4%{?dist}
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
 Group:		Applications/Databases
@@ -40,8 +39,10 @@ Source0:	http://initd.org/psycopg/tarballs/PSYCOPG-2-4/psycopg2-%{version}.tar.g
 BuildRequires:	postgresql-devel
 BuildRequires:	python-devel
 BuildRequires:	python-debug
+%if 0%{?with_python3}
 BuildRequires:	python3-devel
 BuildRequires:	python3-debug
+%endif # with_python3
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Conflicts:	python-psycopg2-zope < %{version}
@@ -192,6 +193,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Fri Aug  3 2012 David Malcolm <dmalcolm@redhat.com> - 2.4.5-4
+- replace "python3.2dmu" with "python3-debug"; with_python3 fixes
+
 * Fri Aug  3 2012 David Malcolm <dmalcolm@redhat.com> - 2.4.5-3
 - add with_python3 conditional
 

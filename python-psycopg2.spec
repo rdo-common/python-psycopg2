@@ -28,7 +28,7 @@
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
 Version:	2.4.5
-Release:	4%{?dist}
+Release:	5%{?dist}
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
 Group:		Applications/Databases
@@ -164,7 +164,7 @@ rm -rf %{buildroot}
 %doc AUTHORS ChangeLog LICENSE NEWS README
 %dir %{python3_sitearch}/psycopg2
 %{python3_sitearch}/psycopg2/*.py
-%{python3_sitearch}/psycopg2/_psycopg.cpython-3?mu.so
+%{python3_sitearch}/psycopg2/_psycopg.cpython-3?m*.so
 %dir %{python3_sitearch}/psycopg2/__pycache__
 %{python3_sitearch}/psycopg2/__pycache__/*.pyc
 %{python3_sitearch}/psycopg2/__pycache__/*.pyo
@@ -173,7 +173,7 @@ rm -rf %{buildroot}
 %files -n python3-psycopg2-debug
 %defattr(-,root,root)
 %doc LICENSE
-%{python3_sitearch}/psycopg2/_psycopg.cpython-3?dmu.so
+%{python3_sitearch}/psycopg2/_psycopg.cpython-3?dm*.so
 %endif # with_python3
 
 
@@ -193,6 +193,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Fri Aug  3 2012 David Malcolm <dmalcolm@redhat.com> - 2.4.5-5
+- generalize python 3 fileglobbing to work with both Python 3.2 and 3.3
+
 * Fri Aug  3 2012 David Malcolm <dmalcolm@redhat.com> - 2.4.5-4
 - replace "python3.2dmu" with "python3-debug"; with_python3 fixes
 

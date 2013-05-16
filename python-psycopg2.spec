@@ -27,14 +27,14 @@
 
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
-Version:	2.4.5
-Release:	7%{?dist}
+Version:	2.5
+Release:	1%{?dist}
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
 Group:		Applications/Databases
-Url:		http://www.initd.org/psycopg/
+Url:		http://www.psycopg.org/psycopg/
 
-Source0:	http://initd.org/psycopg/tarballs/PSYCOPG-2-4/psycopg2-%{version}.tar.gz
+Source0:	http://www.psycopg.org/psycopg/tarballs/PSYCOPG-2-5/psycopg2-%{version}.tar.gz
 
 BuildRequires:	postgresql-devel
 BuildRequires:	python-devel
@@ -145,7 +145,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc AUTHORS ChangeLog LICENSE NEWS README
+%doc AUTHORS LICENSE NEWS README
 %dir %{python_sitearch}/psycopg2
 %{python_sitearch}/psycopg2/*.py
 %{python_sitearch}/psycopg2/*.pyc
@@ -161,7 +161,7 @@ rm -rf %{buildroot}
 %if 0%{?with_python3}
 %files -n python3-psycopg2
 %defattr(-,root,root)
-%doc AUTHORS ChangeLog LICENSE NEWS README
+%doc AUTHORS LICENSE NEWS README
 %dir %{python3_sitearch}/psycopg2
 %{python3_sitearch}/psycopg2/*.py
 %{python3_sitearch}/psycopg2/_psycopg.cpython-3?m*.so
@@ -193,6 +193,10 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Thu May 16 2013 Devrim Gündüz <devrim@gunduz.org> 2.5-1
+- Update to 2.5, per changes described at:
+  http://www.psycopg.org/psycopg/articles/2013/04/07/psycopg-25-released/
+
 * Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.4.5-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 

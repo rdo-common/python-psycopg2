@@ -193,6 +193,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Sun Jul 07 2013 Pavel Raiskup <praiskup@redhat.com> - 2.5.1-1
+- rebase to 2.5.1
+
 * Thu May 16 2013 Devrim Gündüz <devrim@gunduz.org> 2.5-1
 - Update to 2.5, per changes described at:
   http://www.psycopg.org/psycopg/articles/2013/04/07/psycopg-25-released/

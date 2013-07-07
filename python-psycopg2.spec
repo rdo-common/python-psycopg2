@@ -367,18 +367,18 @@ Related: #711095
 - Replaced dos2unix with sed, per guidelines and bugzilla review (#199784)
 - Fix changelog dates
 
-* Sat Jul 21 2006 - Devrim GUNDUZ <devrim@commandprompt.com> 2.0.2-2
+* Sat Jul 22 2006 - Devrim GUNDUZ <devrim@commandprompt.com> 2.0.2-2
 - Added dos2unix to buildrequires
 - removed python related part from package name
 
-* Fri Jul 20 2006 - Devrim GUNDUZ <devrim@commandprompt.com> 2.0.2-1
+* Fri Jul 21 2006 - Devrim GUNDUZ <devrim@commandprompt.com> 2.0.2-1
 - Fix rpmlint errors, including dos2unix solution
 - Re-engineered spec file
 
-* Fri Jan 23 2006 - Devrim GUNDUZ <devrim@commandprompt.com>
+* Mon Jan 23 2006 - Devrim GUNDUZ <devrim@commandprompt.com>
 - First 2.0.X build
 
-* Fri Jan 23 2006 - Devrim GUNDUZ <devrim@commandprompt.com>
+* Mon Jan 23 2006 - Devrim GUNDUZ <devrim@commandprompt.com>
 - Update to 1.2.21
 
 * Tue Dec 06 2005 - Devrim GUNDUZ <devrim@commandprompt.com>

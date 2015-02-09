@@ -116,6 +116,8 @@ for i in `find doc -iname "*.css"`; do sed -i 's/\r//' $i; done
 # Get rid of a "hidden" file that rpmlint complains about
 rm -f doc/html/.buildinfo
 
+make -C doc/src html
+
 %install
 
 DoInstall() {

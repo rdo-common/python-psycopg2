@@ -27,14 +27,14 @@
 
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
-Version:	2.5.4
+Version:	2.6
 Release:	1%{?dist}
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
 Group:		Applications/Databases
 Url:		http://www.psycopg.org/psycopg/
 
-Source0:	http://www.psycopg.org/psycopg/tarballs/PSYCOPG-2-5/psycopg2-%{version}.tar.gz
+Source0:	http://www.psycopg.org/psycopg/tarballs/PSYCOPG-2-6/psycopg2-%{version}.tar.gz
 
 BuildRequires:	postgresql-devel
 BuildRequires:	python-devel
@@ -193,6 +193,10 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Mon Feb 9 2015 Devrim Gündüz <devrim@gunduz.org> 2.6-1
+- Update to 2.6, per changes described at:
+  http://www.psycopg.org/psycopg/articles/2015/02/09/psycopg-26-and-255-released/
+
 * Tue Jan 13 2015 Devrim Gündüz <devrim@gunduz.org> 2.5.4-1
 - Update to 2.5.4, per changes described at:
   http://www.psycopg.org/psycopg/articles/2014/08/30/psycopg-254-released

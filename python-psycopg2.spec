@@ -145,7 +145,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc AUTHORS LICENSE NEWS README
+%doc AUTHORS LICENSE NEWS README.rst
 %dir %{python_sitearch}/psycopg2
 %{python_sitearch}/psycopg2/*.py
 %{python_sitearch}/psycopg2/*.pyc
@@ -161,7 +161,7 @@ rm -rf %{buildroot}
 %if 0%{?with_python3}
 %files -n python3-psycopg2
 %defattr(-,root,root)
-%doc AUTHORS LICENSE NEWS README
+%doc AUTHORS LICENSE NEWS README.rst
 %dir %{python3_sitearch}/psycopg2
 %{python3_sitearch}/psycopg2/*.py
 %{python3_sitearch}/psycopg2/_psycopg.cpython-3?m*.so

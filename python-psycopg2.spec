@@ -27,7 +27,7 @@
 
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
-Version:	2.6
+Version:	2.6.1
 Release:	1%{?dist}
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
@@ -43,6 +43,7 @@ BuildRequires:	python-debug
 BuildRequires:	python3-devel
 BuildRequires:	python3-debug
 %endif # with_python3
+BuildRequires:	python-sphinx
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Conflicts:	python-psycopg2-zope < %{version}
@@ -195,6 +196,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Mon Jul 15 2015 Jozef Mlich <jmlich@redhat.com> 2.6.1-1
+- Update to 2.6.1
+
 * Mon Feb 9 2015 Devrim Gündüz <devrim@gunduz.org> 2.6-1
 - Update to 2.6, per changes described at:
   http://www.psycopg.org/psycopg/articles/2015/02/09/psycopg-26-and-255-released/

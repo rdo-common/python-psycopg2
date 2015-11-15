@@ -8,14 +8,6 @@
 %global python_runtimes  python python-debug
 %endif # with_python3
 
-# Python major version.
-%{expand: %%define pyver %(python -c 'import sys;print(sys.version[0:3])')}
-%{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
-
-%if 0%{?with_python3}
-%{expand: %%define py3ver %(python3 -c 'import sys;print(sys.version[0:3])')}
-%endif # with_python3
-
 
 # Python 2.5+ is not supported by Zope, so it does not exist in
 # recent Fedora releases. That's why zope subpackage is disabled.
@@ -28,7 +20,7 @@
 Summary:	A PostgreSQL database adapter for Python
 Name:		python-psycopg2
 Version:	2.6.1
-Release:	3%{?dist}
+Release:	4%{?dist}
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
 Group:		Applications/Databases
@@ -154,7 +146,7 @@ rm -rf %{buildroot}
 %{python_sitearch}/psycopg2/*.pyc
 %{python_sitearch}/psycopg2/_psycopg.so
 %{python_sitearch}/psycopg2/*.pyo
-%{python_sitearch}/psycopg2-%{version}-py%{pyver}.egg-info
+%{python_sitearch}/psycopg2-%{version}-py2*.egg-info
 
 %files debug
 %defattr(-,root,root)
@@ -171,7 +163,7 @@ rm -rf %{buildroot}
 %dir %{python3_sitearch}/psycopg2/__pycache__
 %{python3_sitearch}/psycopg2/__pycache__/*.pyc
 %{python3_sitearch}/psycopg2/__pycache__/*.pyo
-%{python3_sitearch}/psycopg2-%{version}-py%{py3ver}.egg-info
+%{python3_sitearch}/psycopg2-%{version}-py3*.egg-info
 
 %files -n python3-psycopg2-debug
 %defattr(-,root,root)
@@ -196,13 +188,17 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Sun Nov 15 2015 Pavel Raiskup <praiskup@redhat.com> - 2.6.1-4
+- again bump for new Python 3.5, not build previously?
+- fix rpmlint issues
+
 * Tue Nov 10 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org>
 - Rebuilt for https://fedoraproject.org/wiki/Changes/python3.5
 
 * Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.6.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
-* Mon Jul 15 2015 Jozef Mlich <jmlich@redhat.com> 2.6.1-1
+* Mon Jun 15 2015 Jozef Mlich <jmlich@redhat.com> 2.6.1-1
 - Update to 2.6.1
 
 * Mon Feb 9 2015 Devrim Gündüz <devrim@gunduz.org> 2.6-1

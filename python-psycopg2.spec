@@ -162,7 +162,6 @@ rm -rf %{buildroot}
 %{python3_sitearch}/psycopg2/_psycopg.cpython-3?m*.so
 %dir %{python3_sitearch}/psycopg2/__pycache__
 %{python3_sitearch}/psycopg2/__pycache__/*.pyc
-%{python3_sitearch}/psycopg2/__pycache__/*.pyo
 %{python3_sitearch}/psycopg2-%{version}-py3*.egg-info
 
 %files -n python3-psycopg2-debug
@@ -191,6 +190,7 @@ rm -rf %{buildroot}
 * Sun Nov 15 2015 Pavel Raiskup <praiskup@redhat.com> - 2.6.1-4
 - again bump for new Python 3.5, not build previously?
 - fix rpmlint issues
+- no pyo files with python 3.5
 
 * Tue Nov 10 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org>
 - Rebuilt for https://fedoraproject.org/wiki/Changes/python3.5

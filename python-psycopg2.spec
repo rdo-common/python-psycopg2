@@ -10,9 +10,9 @@ features offered by PostgreSQL.
 %endif
 
 %if 0%{?with_python3}
-%global python_runtimes  python python-debug python3 python3-debug
+%global python_runtimes	python python-debug python3 python3-debug
 %else
-%global python_runtimes  python python-debug
+%global python_runtimes	python python-debug
 %endif # with_python3
 
 
@@ -77,6 +77,7 @@ Summary: %{sum} 3
 %description  -n python3-psycopg2
 %{desc}
 
+
 %package -n python3-psycopg2-debug
 Summary: A PostgreSQL database adapter for Python 3 (debug build)
 # Require base python 3 package, as we're sharing .py/.pyc files:
@@ -86,6 +87,7 @@ Requires:	python3-psycopg2 = %{version}-%{release}
 This is a build of the psycopg PostgreSQL database adapter for the debug
 build of Python 3.
 %endif # with_python3
+
 
 %package doc
 Summary:	Documentation for psycopg python PostgreSQL database adapter
@@ -97,6 +99,7 @@ Provides:	python3-%{srcname}-doc = %{version}-%{release}
 %description doc
 Documentation and example files for the psycopg python PostgreSQL
 database adapter.
+
 
 %if %zope
 %package zope
@@ -111,8 +114,10 @@ Requires:	zope
 Zope Database Adapter for PostgreSQL, called ZPsycopgDA
 %endif
 
+
 %prep
 %setup -q -n psycopg2-%{version}
+
 
 %build
 for python in %{python_runtimes} ; do
@@ -128,8 +133,8 @@ rm -f doc/html/.buildinfo
 
 make -C doc/src html
 
-%install
 
+%install
 DoInstall() {
   PythonBinary=$1
 
@@ -162,9 +167,11 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 %{python2_sitearch}/psycopg2/*.pyo
 %{python2_sitearch}/psycopg2-%{version}-py2*.egg-info
 
+
 %files -n python2-%{srcname}-debug
 %license LICENSE
 %{python2_sitearch}/psycopg2/_psycopg_d.so
+
 
 %if 0%{?with_python3}
 %files -n python3-psycopg2
@@ -177,6 +184,7 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 %{python3_sitearch}/psycopg2/__pycache__/*.py{c,o}
 %{python3_sitearch}/psycopg2-%{version}-py3*.egg-info
 
+
 %files -n python3-psycopg2-debug
 %license LICENSE
 %{python3_sitearch}/psycopg2/_psycopg.cpython-3?dm*.so
@@ -186,6 +194,7 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 %files doc
 %license LICENSE
 %doc doc examples/
+
 
 %if %zope
 %files zope
@@ -197,6 +206,7 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 %{ZPsycopgDAdir}/dtml/*
 %{ZPsycopgDAdir}/icons/*
 %endif
+
 
 %changelog
 * Sun May 29 2016 Pavel Raiskup <praiskup@redhat.com> - 2.6.1-6

@@ -43,7 +43,6 @@ BuildRequires:	python3-devel
 BuildRequires:	python3-debug
 %endif # with_python3
 BuildRequires:	python-sphinx
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Conflicts:	python-psycopg2-zope < %{version}
 
@@ -143,7 +142,6 @@ DoInstall() {
   rm -rf %{buildroot}$Python_SiteArch/psycopg2/tests
 }
 
-rm -rf %{buildroot}
 for python in %{python_runtimes} ; do
   DoInstall $python
 done
@@ -153,12 +151,10 @@ install -d %{buildroot}%{ZPsycopgDAdir}
 cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 %endif
 
-%clean
-rm -rf %{buildroot}
 
 %files -n python2-psycopg2
-%defattr(-,root,root)
-%doc AUTHORS LICENSE NEWS README.rst
+%license LICENSE
+%doc AUTHORS NEWS README.rst
 %dir %{python2_sitearch}/psycopg2
 %{python2_sitearch}/psycopg2/*.py
 %{python2_sitearch}/psycopg2/*.pyc
@@ -167,14 +163,13 @@ rm -rf %{buildroot}
 %{python2_sitearch}/psycopg2-%{version}-py2*.egg-info
 
 %files -n python2-%{srcname}-debug
-%defattr(-,root,root)
-%doc LICENSE
+%license LICENSE
 %{python2_sitearch}/psycopg2/_psycopg_d.so
 
 %if 0%{?with_python3}
 %files -n python3-psycopg2
-%defattr(-,root,root)
-%doc AUTHORS LICENSE NEWS README.rst
+%license LICENSE
+%doc AUTHORS NEWS README.rst
 %dir %{python3_sitearch}/psycopg2
 %{python3_sitearch}/psycopg2/*.py
 %{python3_sitearch}/psycopg2/_psycopg.cpython-3?m*.so
@@ -183,19 +178,18 @@ rm -rf %{buildroot}
 %{python3_sitearch}/psycopg2-%{version}-py3*.egg-info
 
 %files -n python3-psycopg2-debug
-%defattr(-,root,root)
-%doc LICENSE
+%license LICENSE
 %{python3_sitearch}/psycopg2/_psycopg.cpython-3?dm*.so
 %endif # with_python3
 
 
 %files doc
-%defattr(-,root,root)
+%license LICENSE
 %doc doc examples/
 
 %if %zope
 %files zope
-%defattr(-,root,root)
+%license LICENSE
 %dir %{ZPsycopgDAdir}
 %{ZPsycopgDAdir}/*.py
 %{ZPsycopgDAdir}/*.pyo
@@ -207,6 +201,7 @@ rm -rf %{buildroot}
 %changelog
 * Sun May 29 2016 Pavel Raiskup <praiskup@redhat.com> - 2.6.1-6
 - provide python2-psycopg2 (rhbz#1306025)
+- cleanup obsoleted packaging stuff
 
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 2.6.1-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild

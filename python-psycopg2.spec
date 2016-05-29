@@ -1,3 +1,10 @@
+%global srcname	psycopg2
+%global sum	A PostgreSQL database adapter for Python
+%global desc	Psycopg is the most popular PostgreSQL adapter for the Python \
+programming language. At its core it fully implements the Python DB \
+API 2.0 specifications. Several extensions allow access to many of the \
+features offered by PostgreSQL.
+
 %if 0%{?fedora} > 12
 %global with_python3 1
 %endif
@@ -17,10 +24,10 @@
 %endif
 
 
-Summary:	A PostgreSQL database adapter for Python
-Name:		python-psycopg2
+Summary:	%{sum}
+Name:		python-%{srcname}
 Version:	2.6.1
-Release:	5%{?dist}
+Release:	6%{?dist}
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
 Group:		Applications/Databases
@@ -41,33 +48,42 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Conflicts:	python-psycopg2-zope < %{version}
 
 %description
-Psycopg is the most popular PostgreSQL adapter for the Python
-programming language. At its core it fully implements the Python DB
-API 2.0 specifications. Several extensions allow access to many of the
-features offered by PostgreSQL.
+%{desc}
 
-%package debug
+
+%package -n python2-%{srcname}
+%{?python_provide:%python_provide python2-%{srcname}}
+Summary: %{sum} 2
+
+%description -n python2-%{srcname}
+%{desc}
+
+
+%package -n python2-%{srcname}-debug
 Summary: A PostgreSQL database adapter for Python 2 (debug build)
 # Require the base package, as we're sharing .py/.pyc files:
 Requires:	%{name} = %{version}-%{release}
+%{?python_provide:%python_provide python2-%{srcname}-debug}
 
-%description debug
+%description -n python2-%{srcname}-debug
 This is a build of the psycopg PostgreSQL database adapter for the debug
 build of Python 2.
 
+
 %if 0%{?with_python3}
 %package -n python3-psycopg2
-Summary: A PostgreSQL database adapter for Python 3
+Summary: %{sum} 3
+%{?python_provide:%python_provide python3-%{srcname}}
 
 %description  -n python3-psycopg2
-This is a build of the psycopg PostgreSQL database adapter for Python 3.
+%{desc}
 
 %package -n python3-psycopg2-debug
 Summary: A PostgreSQL database adapter for Python 3 (debug build)
 # Require base python 3 package, as we're sharing .py/.pyc files:
 Requires:	python3-psycopg2 = %{version}-%{release}
 
-%description -n python3-psycopg2-debug
+%description -n python3-%{srcname}-debug
 This is a build of the psycopg PostgreSQL database adapter for the debug
 build of Python 3.
 %endif # with_python3
@@ -76,6 +92,8 @@ build of Python 3.
 Summary:	Documentation for psycopg python PostgreSQL database adapter
 Group:		Documentation
 Requires:	%{name} = %{version}-%{release}
+Provides:	python2-%{srcname}-doc = %{version}-%{release}
+Provides:	python3-%{srcname}-doc = %{version}-%{release}
 
 %description doc
 Documentation and example files for the psycopg python PostgreSQL
@@ -138,20 +156,20 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 %clean
 rm -rf %{buildroot}
 
-%files
+%files -n python2-psycopg2
 %defattr(-,root,root)
 %doc AUTHORS LICENSE NEWS README.rst
-%dir %{python_sitearch}/psycopg2
-%{python_sitearch}/psycopg2/*.py
-%{python_sitearch}/psycopg2/*.pyc
-%{python_sitearch}/psycopg2/_psycopg.so
-%{python_sitearch}/psycopg2/*.pyo
-%{python_sitearch}/psycopg2-%{version}-py2*.egg-info
+%dir %{python2_sitearch}/psycopg2
+%{python2_sitearch}/psycopg2/*.py
+%{python2_sitearch}/psycopg2/*.pyc
+%{python2_sitearch}/psycopg2/_psycopg.so
+%{python2_sitearch}/psycopg2/*.pyo
+%{python2_sitearch}/psycopg2-%{version}-py2*.egg-info
 
-%files debug
+%files -n python2-%{srcname}-debug
 %defattr(-,root,root)
 %doc LICENSE
-%{python_sitearch}/psycopg2/_psycopg_d.so
+%{python2_sitearch}/psycopg2/_psycopg_d.so
 
 %if 0%{?with_python3}
 %files -n python3-psycopg2
@@ -161,7 +179,7 @@ rm -rf %{buildroot}
 %{python3_sitearch}/psycopg2/*.py
 %{python3_sitearch}/psycopg2/_psycopg.cpython-3?m*.so
 %dir %{python3_sitearch}/psycopg2/__pycache__
-%{python3_sitearch}/psycopg2/__pycache__/*.pyc
+%{python3_sitearch}/psycopg2/__pycache__/*.py{c,o}
 %{python3_sitearch}/psycopg2-%{version}-py3*.egg-info
 
 %files -n python3-psycopg2-debug
@@ -187,6 +205,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Sun May 29 2016 Pavel Raiskup <praiskup@redhat.com> - 2.6.1-6
+- provide python2-psycopg2 (rhbz#1306025)
+
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 2.6.1-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 

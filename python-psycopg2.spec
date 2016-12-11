@@ -27,7 +27,7 @@ features offered by PostgreSQL.
 Summary:	%{sum}
 Name:		python-%{srcname}
 Version:	2.6.2
-Release:	2%{?dist}
+Release:	3%{?dist}
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
 Group:		Applications/Databases
@@ -209,6 +209,9 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 
 
 %changelog
+* Fri Dec 09 2016 Charalampos Stratakis <cstratak@redhat.com> - 2.6.2-3
+- Rebuild for Python 3.6
+
 * Tue Jul 19 2016 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.6.2-2
 - https://fedoraproject.org/wiki/Changes/Automatic_Provides_for_Python_RPM_Packages
 

@@ -26,14 +26,14 @@ features offered by PostgreSQL.
 
 Summary:	%{sum}
 Name:		python-%{srcname}
-Version:	2.6.2
-Release:	4%{?dist}
+Version:	2.7
+Release:	1%{?dist}
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
 Group:		Applications/Databases
 Url:		http://www.psycopg.org/psycopg/
 
-Source0:	http://www.psycopg.org/psycopg/tarballs/PSYCOPG-2-6/psycopg2-%{version}.tar.gz
+Source0:	http://www.psycopg.org/psycopg/tarballs/PSYCOPG-2-7/psycopg2-%{version}.tar.gz
 
 BuildRequires:	postgresql-devel
 BuildRequires:	python-devel
@@ -57,6 +57,12 @@ Summary: %{sum} 2
 %description -n python2-%{srcname}
 %{desc}
 
+%package -n python2-%{srcname}-tests
+Summary: A testsuite for %sum 2
+
+%description -n python2-%{srcname}-tests
+%desc
+This sub-package delivers set of tests for the adapter.
 
 %package -n python2-%{srcname}-debug
 Summary: A PostgreSQL database adapter for Python 2 (debug build)
@@ -76,6 +82,14 @@ Summary: %{sum} 3
 
 %description  -n python3-psycopg2
 %{desc}
+
+
+%package -n python3-%{srcname}-tests
+Summary: A testsuite for %sum 2
+
+%description -n python3-%{srcname}-tests
+%desc
+This sub-package delivers set of tests for the adapter.
 
 
 %package -n python3-psycopg2-debug
@@ -134,21 +148,25 @@ rm -f doc/html/.buildinfo
 make -C doc/src html
 
 
+%check
+export PGTESTS_LOCALE=C.UTF-8
+%pgtests_init
+%pgtests_start
+
+export PSYCOPG2_TESTDB=${PGTESTS_DATABASES##*:}
+export PSYCOPG2_TESTDB_HOST=$PGHOST
+export PSYCOPG2_TESTDB_PORT=$PGPORT
+# export PSYCOPG2_TESTDB_USER
+# export PSYCOPG2_TESTDB_PASSWORD
+
+cmd="from psycopg2 import tests; tests.unittest.main(defaultTest='tests.test_suite')"
+PYTHONPATH=%buildroot%python2_sitearch %__python2 -c "$cmd" --verbose || :
+PYTHONPATH=%buildroot%python3_sitearch %__python3 -c "$cmd" --verbose || :
+
+
 %install
-DoInstall() {
-  PythonBinary=$1
-
-  Python_SiteArch=$($PythonBinary -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")
-
-  mkdir -p %{buildroot}$Python_SiteArch/psycopg2
-  $PythonBinary setup.py install --no-compile --root %{buildroot}
-
-  # We're not currently interested in packaging the test suite.
-  rm -rf %{buildroot}$Python_SiteArch/psycopg2/tests
-}
-
 for python in %{python_runtimes} ; do
-  DoInstall $python
+  $python setup.py install --no-compile --root %{buildroot}
 done
 
 %if %zope
@@ -167,6 +185,8 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 %{python2_sitearch}/psycopg2/*.pyo
 %{python2_sitearch}/psycopg2-%{version}-py2*.egg-info
 
+%files -n python2-%{srcname}-tests
+%{python2_sitearch}/psycopg2/tests
 
 %files -n python2-%{srcname}-debug
 %license LICENSE
@@ -184,6 +204,9 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 %{python3_sitearch}/psycopg2/__pycache__/*.py{c,o}
 %{python3_sitearch}/psycopg2-%{version}-py3*.egg-info
 
+
+%files -n python3-%{srcname}-tests
+%{python3_sitearch}/psycopg2/tests
 
 %files -n python3-psycopg2-debug
 %license LICENSE
@@ -209,6 +232,11 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 
 
 %changelog
+* Thu Mar 02 2017 Pavel Raiskup <praiskup@redhat.com> - 2.7-1
+- rebase to latest upstream release, per release notes:
+  http://initd.org/psycopg/articles/2017/03/01/psycopg-27-released/
+- enable testsuite during build, and package it
+
 * Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 2.6.2-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 

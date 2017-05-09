@@ -15,6 +15,8 @@ features offered by PostgreSQL.
 %global python_runtimes	python python-debug
 %endif # with_python3
 
+# run testsuite by default
+%bcond_without check
 
 # Python 2.5+ is not supported by Zope, so it does not exist in
 # recent Fedora releases. That's why zope subpackage is disabled.
@@ -44,6 +46,11 @@ BuildRequires:	python3-debug
 %endif # with_python3
 BuildRequires:	python-sphinx
 
+# For testsuite
+%if %{with check}
+BuildRequires:	postgresql-server
+%endif
+
 Conflicts:	python-psycopg2-zope < %{version}
 
 %description
@@ -57,12 +64,15 @@ Summary: %{sum} 2
 %description -n python2-%{srcname}
 %{desc}
 
+
 %package -n python2-%{srcname}-tests
 Summary: A testsuite for %sum 2
+Requires: python2-%srcname = %version-%release
 
 %description -n python2-%{srcname}-tests
 %desc
 This sub-package delivers set of tests for the adapter.
+
 
 %package -n python2-%{srcname}-debug
 Summary: A PostgreSQL database adapter for Python 2 (debug build)
@@ -86,6 +96,7 @@ Summary: %{sum} 3
 
 %package -n python3-%{srcname}-tests
 Summary: A testsuite for %sum 2
+Requires: python3-%srcname = %version-%release
 
 %description -n python3-%{srcname}-tests
 %desc
@@ -149,6 +160,7 @@ make -C doc/src html
 
 
 %check
+%if %{with check}
 export PGTESTS_LOCALE=C.UTF-8
 %pgtests_init
 %pgtests_start
@@ -156,12 +168,13 @@ export PGTESTS_LOCALE=C.UTF-8
 export PSYCOPG2_TESTDB=${PGTESTS_DATABASES##*:}
 export PSYCOPG2_TESTDB_HOST=$PGHOST
 export PSYCOPG2_TESTDB_PORT=$PGPORT
-# export PSYCOPG2_TESTDB_USER
-# export PSYCOPG2_TESTDB_PASSWORD
 
 cmd="from psycopg2 import tests; tests.unittest.main(defaultTest='tests.test_suite')"
-PYTHONPATH=%buildroot%python2_sitearch %__python2 -c "$cmd" --verbose || :
-PYTHONPATH=%buildroot%python3_sitearch %__python3 -c "$cmd" --verbose || :
+PYTHONPATH=%buildroot%python2_sitearch %__python2 -c "$cmd" --verbose
+%if 0%with_python3
+PYTHONPATH=%buildroot%python3_sitearch %__python3 -c "$cmd" --verbose
+%endif
+%endif
 
 
 %install
@@ -235,6 +248,7 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 * Mon Mar 13 2017 Pavel Raiskup <praiskup@redhat.com> - 2.7.1-1
 - rebase to latest upstream release, per release notes:
   http://initd.org/psycopg/articles/2017/03/01/psycopg-271-released/
+- fix testsuite
 
 * Thu Mar 02 2017 Pavel Raiskup <praiskup@redhat.com> - 2.7-1
 - rebase to latest upstream release, per release notes:

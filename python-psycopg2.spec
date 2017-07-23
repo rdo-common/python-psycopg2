@@ -28,7 +28,7 @@ features offered by PostgreSQL.
 
 Summary:	%{sum}
 Name:		python-%{srcname}
-Version:	2.7.1
+Version:	2.7.2
 Release:	1%{?dist}
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
@@ -245,6 +245,10 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 
 
 %changelog
+* Sun Jul 23 2017 Pavel Raiskup <praiskup@redhat.com> - 2.7.2-1
+- rebase to latest upstream release, per release notes:
+  http://initd.org/psycopg/articles/2017/07/22/psycopg-272-released/
+
 * Mon Mar 13 2017 Pavel Raiskup <praiskup@redhat.com> - 2.7.1-1
 - rebase to latest upstream release, per release notes:
   http://initd.org/psycopg/articles/2017/03/01/psycopg-271-released/

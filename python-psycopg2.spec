@@ -28,8 +28,8 @@ features offered by PostgreSQL.
 
 Summary:	%{sum}
 Name:		python-%{srcname}
-Version:	2.7.2
-Release:	3%{?dist}
+Version:	2.7.3
+Release:	1%{?dist}
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
 Group:		Applications/Databases
@@ -245,6 +245,10 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 
 
 %changelog
+* Sun Aug 13 2017 Pavel Raiskup <praiskup@redhat.com> - 2.7.3-1
+- rebase to latest upstream release, per release notes:
+  http://initd.org/psycopg/articles/2017/07/24/psycopg-273-released/
+
 * Thu Aug 03 2017 Fedora Release Engineering <releng@fedoraproject.org> - 2.7.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
 

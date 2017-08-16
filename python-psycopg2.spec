@@ -156,7 +156,9 @@ for i in `find doc -iname "*.css"`; do sed -i 's/\r//' $i; done
 # Get rid of a "hidden" file that rpmlint complains about
 rm -f doc/html/.buildinfo
 
-make -C doc/src html
+# We can not build docs now:
+# https://www.postgresql.org/message-id/2741387.dvL6Cb0VMB@nb.usersys.redhat.com
+# make -C doc/src html
 
 
 %check

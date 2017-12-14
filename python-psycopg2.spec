@@ -1,3 +1,12 @@
+%if 0%{?fedora}
+%bcond_without python2
+%bcond_without python3
+%else
+%bcond_with    python2
+%bcond_without python3
+%endif
+
+
 %global srcname	psycopg2
 %global sum	A PostgreSQL database adapter for Python
 %global desc	Psycopg is the most popular PostgreSQL adapter for the Python \
@@ -5,18 +14,10 @@ programming language. At its core it fully implements the Python DB \
 API 2.0 specifications. Several extensions allow access to many of the \
 features offered by PostgreSQL.
 
-%if 0%{?fedora} > 12
-%global with_python3 1
-%endif
+%global python_runtimes	%{?with_python2:python2 python2-debug} \\\
+                        %{?with_python3:python3 python3-debug}
 
-%if 0%{?with_python3}
-%global python_runtimes	python python-debug python3 python3-debug
-%else
-%global python_runtimes	python python-debug
-%endif # with_python3
-
-# run testsuite by default
-%bcond_without check
+%{!?with_python2:%{!?with_python3:%{error:one python version eneeded}}}
 
 # Python 2.5+ is not supported by Zope, so it does not exist in
 # recent Fedora releases. That's why zope subpackage is disabled.
@@ -29,7 +30,7 @@ features offered by PostgreSQL.
 Summary:	%{sum}
 Name:		python-%{srcname}
 Version:	2.7.3.2
-Release:	1%{?dist}
+Release:	2%{?dist}
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
 Group:		Applications/Databases
@@ -37,14 +38,10 @@ Url:		http://www.psycopg.org/psycopg/
 
 Source0:	http://www.psycopg.org/psycopg/tarballs/PSYCOPG-2-7/psycopg2-%{version}.tar.gz
 
-BuildRequires:	postgresql-devel
-BuildRequires:	python-devel
-BuildRequires:	python-debug
-%if 0%{?with_python3}
-BuildRequires:	python3-devel
-BuildRequires:	python3-debug
-%endif # with_python3
-BuildRequires:	python-sphinx
+%{?with_python2:BuildRequires:	python2-debug python2-devel}
+%{?with_python3:BuildRequires:	python3-debug python3-devel}
+
+BuildRequires: postgresql-devel
 
 # For testsuite
 %if %{with check}
@@ -85,7 +82,7 @@ This is a build of the psycopg PostgreSQL database adapter for the debug
 build of Python 2.
 
 
-%if 0%{?with_python3}
+%if %{with python3}
 %package -n python3-psycopg2
 Summary: %{sum} 3
 %{?python_provide:%python_provide python3-%{srcname}}
@@ -111,15 +108,15 @@ Requires:	python3-psycopg2 = %{version}-%{release}
 %description -n python3-%{srcname}-debug
 This is a build of the psycopg PostgreSQL database adapter for the debug
 build of Python 3.
-%endif # with_python3
+%endif # python3
 
 
 %package doc
 Summary:	Documentation for psycopg python PostgreSQL database adapter
 Group:		Documentation
 Requires:	%{name} = %{version}-%{release}
-Provides:	python2-%{srcname}-doc = %{version}-%{release}
-Provides:	python3-%{srcname}-doc = %{version}-%{release}
+%{?with_python2:Provides: python2-%{srcname}-doc = %{version}-%{release}}
+%{?with_python3:Provides: python3-%{srcname}-doc = %{version}-%{release}}
 
 %description doc
 Documentation and example files for the psycopg python PostgreSQL
@@ -172,11 +169,14 @@ export PSYCOPG2_TESTDB_HOST=$PGHOST
 export PSYCOPG2_TESTDB_PORT=$PGPORT
 
 cmd="from psycopg2 import tests; tests.unittest.main(defaultTest='tests.test_suite')"
+
+%if %{with python2}
 PYTHONPATH=%buildroot%python2_sitearch %__python2 -c "$cmd" --verbose
-%if 0%with_python3
+%endif
+%if %{with python3}
 PYTHONPATH=%buildroot%python3_sitearch %__python3 -c "$cmd" --verbose
 %endif
-%endif
+%endif # check
 
 
 %install
@@ -190,6 +190,7 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 %endif
 
 
+%if %{with python2}
 %files -n python2-psycopg2
 %license LICENSE
 %doc AUTHORS NEWS README.rst
@@ -200,15 +201,18 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 %{python2_sitearch}/psycopg2/*.pyo
 %{python2_sitearch}/psycopg2-%{version}-py2*.egg-info
 
+
 %files -n python2-%{srcname}-tests
 %{python2_sitearch}/psycopg2/tests
+
 
 %files -n python2-%{srcname}-debug
 %license LICENSE
 %{python2_sitearch}/psycopg2/_psycopg_d.so
+%endif # python2
 
 
-%if 0%{?with_python3}
+%if %{with python3}
 %files -n python3-psycopg2
 %license LICENSE
 %doc AUTHORS NEWS README.rst
@@ -223,10 +227,11 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 %files -n python3-%{srcname}-tests
 %{python3_sitearch}/psycopg2/tests
 
+
 %files -n python3-psycopg2-debug
 %license LICENSE
 %{python3_sitearch}/psycopg2/_psycopg.cpython-3?dm*.so
-%endif # with_python3
+%endif # python3
 
 
 %files doc
@@ -247,6 +252,9 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 
 
 %changelog
+* Thu Dec 14 2017 Pavel Raiskup <praiskup@redhat.com> - 2.7.3.2-2
+- treat python3/python2 equally
+
 * Wed Oct 25 2017 Pavel Raiskup <praiskup@redhat.com> - 2.7.3.2-1
 - update to 2.7.3.2, per release notes:
   http://initd.org/psycopg/articles/2017/10/24/psycopg-2732-released/

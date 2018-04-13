@@ -6,6 +6,7 @@
 %bcond_without python3
 %endif
 
+%bcond_without check
 
 %global srcname	psycopg2
 %global sum	A PostgreSQL database adapter for Python
@@ -30,7 +31,7 @@ features offered by PostgreSQL.
 Summary:	%{sum}
 Name:		python-%{srcname}
 Version:	2.7.4
-Release:	1%{?dist}
+Release:	2%{?dist}
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
 Group:		Applications/Databases
@@ -252,6 +253,9 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 
 
 %changelog
+* Fri Apr 13 2018 Pavel Raiskup <praiskup@redhat.com> - 2.7.4-2
+- re-enable testsuite
+
 * Mon Feb 12 2018 Pavel Raiskup <praiskup@redhat.com> - 2.7.4-1
 - rebase to latest upstream release, per release notes:
   http://initd.org/psycopg/articles/2018/02/08/psycopg-274-released/

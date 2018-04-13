@@ -31,7 +31,7 @@ features offered by PostgreSQL.
 Summary:	%{sum}
 Name:		python-%{srcname}
 Version:	2.7.4
-Release:	2%{?dist}
+Release:	3%{?dist}
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
 Group:		Applications/Databases
@@ -42,11 +42,11 @@ Source0:	http://www.psycopg.org/psycopg/tarballs/PSYCOPG-2-7/psycopg2-%{version}
 %{?with_python2:BuildRequires:	python2-debug python2-devel}
 %{?with_python3:BuildRequires:	python3-debug python3-devel}
 
-BuildRequires: postgresql-devel
+BuildRequires: pkgconfig(libpq)
 
 # For testsuite
 %if %{with check}
-BuildRequires:	postgresql-server
+BuildRequires:	postgresql-test-rpm-macros
 %endif
 
 Conflicts:	python-psycopg2-zope < %{version}
@@ -162,8 +162,7 @@ rm -f doc/html/.buildinfo
 %check
 %if %{with check}
 export PGTESTS_LOCALE=C.UTF-8
-%pgtests_init
-%pgtests_start
+%postgresql_tests_run
 
 export PSYCOPG2_TESTDB=${PGTESTS_DATABASES##*:}
 export PSYCOPG2_TESTDB_HOST=$PGHOST
@@ -253,6 +252,9 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 
 
 %changelog
+* Fri Apr 13 2018 Pavel Raiskup <praiskup@redhat.com> - 2.7.4-3
+- depend on postgresql-test-rpm-macros
+
 * Fri Apr 13 2018 Pavel Raiskup <praiskup@redhat.com> - 2.7.4-2
 - re-enable testsuite
 

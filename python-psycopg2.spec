@@ -39,6 +39,9 @@ Url:		http://www.psycopg.org/psycopg/
 
 Source0:	http://www.psycopg.org/psycopg/tarballs/PSYCOPG-2-7/psycopg2-%{version}.tar.gz
 
+# https://github.com/psycopg/psycopg2/commit/ef64493b8913e4069c4422ad14da6de405c445f6
+Patch0:		%{srcname}-test-cursor-async.patch
+
 %{?with_python2:BuildRequires:	python2-debug python2-devel}
 %{?with_python3:BuildRequires:	python3-debug python3-devel}
 
@@ -140,6 +143,7 @@ Zope Database Adapter for PostgreSQL, called ZPsycopgDA
 
 %prep
 %setup -q -n psycopg2-%{version}
+%patch0 -p1
 
 
 %build
@@ -189,6 +193,8 @@ install -d %{buildroot}%{ZPsycopgDAdir}
 cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 %endif
 
+# This test is skipped on 3.7 and has a syntax error so brp-python-bytecompile would choke on it
+%{?with_python3:rm -rf %{buildroot}%{python3_sitearch}/%{srcname}/tests/test_async_keyword.py}
 
 %if %{with python2}
 %files -n python2-psycopg2

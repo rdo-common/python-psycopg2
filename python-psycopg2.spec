@@ -31,7 +31,7 @@ features offered by PostgreSQL.
 Summary:	%{sum}
 Name:		python-%{srcname}
 Version:	2.7.4
-Release:	3%{?dist}
+Release:	4%{?dist}
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
 Group:		Applications/Databases
@@ -39,7 +39,7 @@ Url:		http://www.psycopg.org/psycopg/
 
 Source0:	http://www.psycopg.org/psycopg/tarballs/PSYCOPG-2-7/psycopg2-%{version}.tar.gz
 
-# https://github.com/psycopg/psycopg2/commit/ef64493b8913e4069c4422ad14da6de405c445f6
+# https://bugzilla.redhat.com/show_bug.cgi?id=1579761
 Patch0:		%{srcname}-test-cursor-async.patch
 
 %{?with_python2:BuildRequires:	python2-debug python2-devel}
@@ -142,8 +142,7 @@ Zope Database Adapter for PostgreSQL, called ZPsycopgDA
 
 
 %prep
-%setup -q -n psycopg2-%{version}
-%patch0 -p1
+%autosetup -p1 -n psycopg2-%{version}
 
 
 %build
@@ -194,7 +193,7 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 %endif
 
 # This test is skipped on 3.7 and has a syntax error so brp-python-bytecompile would choke on it
-%{?with_python3:rm -rf %{buildroot}%{python3_sitearch}/%{srcname}/tests/test_async_keyword.py}
+%{?with_python3:rm -r %{buildroot}%{python3_sitearch}/%{srcname}/tests/test_async_keyword.py}
 
 %if %{with python2}
 %files -n python2-psycopg2
@@ -258,6 +257,9 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 
 
 %changelog
+* Mon May 21 2018 Pavel Raiskup <praiskup@redhat.com> - 2.7.4-4
+- fix for python 3.7, by mhroncok
+
 * Fri Apr 13 2018 Pavel Raiskup <praiskup@redhat.com> - 2.7.4-3
 - depend on postgresql-test-rpm-macros
 

@@ -30,17 +30,14 @@ features offered by PostgreSQL.
 
 Summary:	%{sum}
 Name:		python-%{srcname}
-Version:	2.7.4
-Release:	5%{?dist}
+Version:	2.7.5
+Release:	1%{?dist}
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
 Group:		Applications/Databases
 Url:		http://www.psycopg.org/psycopg/
 
 Source0:	http://www.psycopg.org/psycopg/tarballs/PSYCOPG-2-7/psycopg2-%{version}.tar.gz
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=1579761
-Patch0:		%{srcname}-test-cursor-async.patch
 
 %{?with_python2:BuildRequires:	python2-debug python2-devel}
 %{?with_python3:BuildRequires:	python3-debug python3-devel}
@@ -257,6 +254,10 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 
 
 %changelog
+* Mon Jun 18 2018 Pavel Raiskup <praiskup@redhat.com> - 2.7.5-1
+- rebase to latest upstream release, per release notes:
+  http://initd.org/psycopg/articles/2018/06/17/psycopg-275-released/
+
 * Sat Jun 16 2018 Miro Hrončok <mhroncok@redhat.com> - 2.7.4-5
 - Rebuilt for Python 3.7
 

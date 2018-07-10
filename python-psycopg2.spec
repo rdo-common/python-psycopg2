@@ -42,6 +42,7 @@ Source0:	http://www.psycopg.org/psycopg/tarballs/PSYCOPG-2-7/psycopg2-%{version}
 %{?with_python2:BuildRequires:	python2-debug python2-devel}
 %{?with_python3:BuildRequires:	python3-debug python3-devel}
 
+BuildRequires:  gcc
 BuildRequires: pkgconfig(libpq)
 
 # For testsuite

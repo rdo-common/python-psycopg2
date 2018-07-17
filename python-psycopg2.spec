@@ -116,7 +116,6 @@ build of Python 3.
 %package doc
 Summary:	Documentation for psycopg python PostgreSQL database adapter
 Group:		Documentation
-Requires:	%{name} = %{version}-%{release}
 %{?with_python2:Provides: python2-%{srcname}-doc = %{version}-%{release}}
 %{?with_python3:Provides: python3-%{srcname}-doc = %{version}-%{release}}
 
@@ -255,6 +254,9 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 
 
 %changelog
+* Tue Jul 17 2018 Pavel Raiskup <praiskup@redhat.com> - 2.7.5-3
+- standalone installable doc subpackage
+
 * Sat Jul 14 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.7.5-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 

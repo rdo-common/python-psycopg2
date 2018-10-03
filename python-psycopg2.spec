@@ -1,10 +1,6 @@
 %if 0%{?fedora}
   %bcond_without python3
-  %if 0%{?fedora} > 29
-    %bcond_with python2
-  %else
-    %bcond_without python2
-  %endif
+  %bcond_without python2
 %else
   %if 0%{?rhel} > 7
     %bcond_with    python2
@@ -278,6 +274,7 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 %changelog
 * Wed Oct 03 2018 Pavel Raiskup <praiskup@redhat.com> - 2.7.5-5
 - prepare --without=debugrpms option (rhbz#1635166)
+- get the python2 packages back for a while (rhbz#1634973)
 
 * Wed Oct 03 2018 Pavel Raiskup <praiskup@redhat.com> - 2.7.5-4
 - drop python2* on f30+ (rhbz#1634973)

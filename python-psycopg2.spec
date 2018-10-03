@@ -154,6 +154,7 @@ Zope Database Adapter for PostgreSQL, called ZPsycopgDA
 
 
 %build
+export CFLAGS=${RPM_OPT_FLAGS} LDFLAGS=${RPM_LD_FLAGS}
 for python in %{python_runtimes} ; do
   $python setup.py build
 done
@@ -191,6 +192,7 @@ PYTHONPATH=%buildroot%python3_sitearch %__python3 -c "$cmd" --verbose
 
 
 %install
+export CFLAGS=${RPM_OPT_FLAGS} LDFLAGS=${RPM_LD_FLAGS}
 for python in %{python_runtimes} ; do
   $python setup.py install --no-compile --root %{buildroot}
 done
@@ -267,6 +269,7 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 %changelog
 * Wed Oct 03 2018 Pavel Raiskup <praiskup@redhat.com> - 2.7.5-4
 - drop python2* on f30+ (rhbz#1634973)
+- use proper compiler/linker flags (rhbz#1631713)
 
 * Tue Jul 17 2018 Pavel Raiskup <praiskup@redhat.com> - 2.7.5-3
 - standalone installable doc subpackage

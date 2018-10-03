@@ -48,8 +48,8 @@ Url:		http://www.psycopg.org/psycopg/
 
 Source0:	http://www.psycopg.org/psycopg/tarballs/PSYCOPG-2-7/psycopg2-%{version}.tar.gz
 
-%{?with_python2:BuildRequires:	python2-debug python2-devel}
-%{?with_python3:BuildRequires:	python3-debug python3-devel}
+%{?with_python2:BuildRequires:	/usr/bin/python2-debug python2-devel}
+%{?with_python3:BuildRequires:	/usr/bin/python3-debug python3-devel}
 
 BuildRequires:  gcc
 BuildRequires: pkgconfig(libpq)
@@ -86,7 +86,7 @@ This sub-package delivers set of tests for the adapter.
 %package -n python2-%{srcname}-debug
 Summary: A PostgreSQL database adapter for Python 2 (debug build)
 # Require the base package, as we're sharing .py/.pyc files:
-Requires:	%{name} = %{version}-%{release}
+Requires:	python2-%{srcname} = %{version}-%{release}
 %{?python_provide:%python_provide python2-%{srcname}-debug}
 
 %description -n python2-%{srcname}-debug
@@ -270,6 +270,7 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 * Wed Oct 03 2018 Pavel Raiskup <praiskup@redhat.com> - 2.7.5-4
 - drop python2* on f30+ (rhbz#1634973)
 - use proper compiler/linker flags (rhbz#1631713)
+- correct the (build)requires
 
 * Tue Jul 17 2018 Pavel Raiskup <praiskup@redhat.com> - 2.7.5-3
 - standalone installable doc subpackage

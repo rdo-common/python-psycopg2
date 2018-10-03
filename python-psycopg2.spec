@@ -1,9 +1,18 @@
 %if 0%{?fedora}
-%bcond_without python2
-%bcond_without python3
+  %bcond_without python3
+  %if 0%{?fedora} > 29
+    %bcond_with python2
+  %else
+    %bcond_without python2
+  %endif
 %else
-%bcond_with    python2
-%bcond_without python3
+  %if 0%{?rhel} > 7
+    %bcond_with    python2
+    %bcond_without python3
+  %else
+    %bcond_without python2
+    %bcond_with    python3
+  %endif
 %endif
 
 %bcond_without check
@@ -18,7 +27,7 @@ features offered by PostgreSQL.
 %global python_runtimes	%{?with_python2:python2 python2-debug} \\\
                         %{?with_python3:python3 python3-debug}
 
-%{!?with_python2:%{!?with_python3:%{error:one python version eneeded}}}
+%{!?with_python2:%{!?with_python3:%{error:one python version needed}}}
 
 # Python 2.5+ is not supported by Zope, so it does not exist in
 # recent Fedora releases. That's why zope subpackage is disabled.
@@ -31,7 +40,7 @@ features offered by PostgreSQL.
 Summary:	%{sum}
 Name:		python-%{srcname}
 Version:	2.7.5
-Release:	3%{?dist}
+Release:	4%{?dist}
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
 Group:		Applications/Databases
@@ -56,6 +65,7 @@ Conflicts:	python-psycopg2-zope < %{version}
 %{desc}
 
 
+%if %{with python2}
 %package -n python2-%{srcname}
 %{?python_provide:%python_provide python2-%{srcname}}
 Summary: %{sum} 2
@@ -82,6 +92,7 @@ Requires:	%{name} = %{version}-%{release}
 %description -n python2-%{srcname}-debug
 This is a build of the psycopg PostgreSQL database adapter for the debug
 build of Python 2.
+%endif # python2
 
 
 %if %{with python3}
@@ -254,6 +265,9 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 
 
 %changelog
+* Wed Oct 03 2018 Pavel Raiskup <praiskup@redhat.com> - 2.7.5-4
+- drop python2* on f30+ (rhbz#1634973)
+
 * Tue Jul 17 2018 Pavel Raiskup <praiskup@redhat.com> - 2.7.5-3
 - standalone installable doc subpackage
 

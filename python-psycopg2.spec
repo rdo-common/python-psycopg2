@@ -16,6 +16,7 @@
 %endif
 
 %bcond_without check
+%bcond_without debugrpms
 
 %global srcname	psycopg2
 %global sum	A PostgreSQL database adapter for Python
@@ -24,8 +25,8 @@ programming language. At its core it fully implements the Python DB \
 API 2.0 specifications. Several extensions allow access to many of the \
 features offered by PostgreSQL.
 
-%global python_runtimes	%{?with_python2:python2 python2-debug} \\\
-                        %{?with_python3:python3 python3-debug}
+%global python_runtimes	%{?with_python2:python2 %{?with_debugrpms:python2-debug}} \\\
+                        %{?with_python3:python3 %{?with_debugrpms:python3-debug}}
 
 %{!?with_python2:%{!?with_python3:%{error:one python version needed}}}
 
@@ -40,7 +41,7 @@ features offered by PostgreSQL.
 Summary:	%{sum}
 Name:		python-%{srcname}
 Version:	2.7.5
-Release:	4%{?dist}
+Release:	5%{?dist}
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
 Group:		Applications/Databases
@@ -48,8 +49,8 @@ Url:		http://www.psycopg.org/psycopg/
 
 Source0:	http://www.psycopg.org/psycopg/tarballs/PSYCOPG-2-7/psycopg2-%{version}.tar.gz
 
-%{?with_python2:BuildRequires:	/usr/bin/python2-debug python2-devel}
-%{?with_python3:BuildRequires:	/usr/bin/python3-debug python3-devel}
+%{?with_python2:BuildRequires:	%{?with_debugrpms:/usr/bin/python2-debug} python2-devel}
+%{?with_python3:BuildRequires:	%{?with_debugrpms:/usr/bin/python3-debug} python3-devel}
 
 BuildRequires:  gcc
 BuildRequires: pkgconfig(libpq)
@@ -83,6 +84,7 @@ Requires: python2-%srcname = %version-%release
 This sub-package delivers set of tests for the adapter.
 
 
+%if %{with debugrpms}
 %package -n python2-%{srcname}-debug
 Summary: A PostgreSQL database adapter for Python 2 (debug build)
 # Require the base package, as we're sharing .py/.pyc files:
@@ -92,6 +94,7 @@ Requires:	python2-%{srcname} = %{version}-%{release}
 %description -n python2-%{srcname}-debug
 This is a build of the psycopg PostgreSQL database adapter for the debug
 build of Python 2.
+%endif # debugrpms
 %endif # python2
 
 
@@ -113,6 +116,7 @@ Requires: python3-%srcname = %version-%release
 This sub-package delivers set of tests for the adapter.
 
 
+%if %{with debugrpms}
 %package -n python3-psycopg2-debug
 Summary: A PostgreSQL database adapter for Python 3 (debug build)
 # Require base python 3 package, as we're sharing .py/.pyc files:
@@ -121,6 +125,7 @@ Requires:	python3-psycopg2 = %{version}-%{release}
 %description -n python3-%{srcname}-debug
 This is a build of the psycopg PostgreSQL database adapter for the debug
 build of Python 3.
+%endif # debugrpms
 %endif # python3
 
 
@@ -221,9 +226,11 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 %{python2_sitearch}/psycopg2/tests
 
 
+%if %{with debugrpms}
 %files -n python2-%{srcname}-debug
 %license LICENSE
 %{python2_sitearch}/psycopg2/_psycopg_d.so
+%endif # debugrpms
 %endif # python2
 
 
@@ -243,9 +250,11 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 %{python3_sitearch}/psycopg2/tests
 
 
+%if %{with debugrpms}
 %files -n python3-psycopg2-debug
 %license LICENSE
 %{python3_sitearch}/psycopg2/_psycopg.cpython-3?dm*.so
+%endif # debugrpms
 %endif # python3
 
 
@@ -267,6 +276,9 @@ cp -pr ZPsycopgDA/* %{buildroot}%{ZPsycopgDAdir}
 
 
 %changelog
+* Wed Oct 03 2018 Pavel Raiskup <praiskup@redhat.com> - 2.7.5-5
+- prepare --without=debugrpms option (rhbz#1635166)
+
 * Wed Oct 03 2018 Pavel Raiskup <praiskup@redhat.com> - 2.7.5-4
 - drop python2* on f30+ (rhbz#1634973)
 - use proper compiler/linker flags (rhbz#1631713)

@@ -40,7 +40,6 @@ Version:	2.7.5
 Release:	5%{?dist}
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	LGPLv3+ with exceptions
-Group:		Applications/Databases
 Url:		http://www.psycopg.org/psycopg/
 
 Source0:	http://www.psycopg.org/psycopg/tarballs/PSYCOPG-2-7/psycopg2-%{version}.tar.gz
@@ -127,7 +126,6 @@ build of Python 3.
 
 %package doc
 Summary:	Documentation for psycopg python PostgreSQL database adapter
-Group:		Documentation
 %{?with_python2:Provides: python2-%{srcname}-doc = %{version}-%{release}}
 %{?with_python3:Provides: python3-%{srcname}-doc = %{version}-%{release}}
 
@@ -141,7 +139,6 @@ database adapter.
 Summary:	Zope Database Adapter ZPsycopgDA
 # The exceptions allow linking to OpenSSL and PostgreSQL's libpq
 License:	GPLv2+ with exceptions or ZPLv1.0
-Group:		Applications/Databases
 Requires:	%{name} = %{version}-%{release}
 Requires:	zope
 

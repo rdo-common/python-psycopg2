@@ -1,14 +1,14 @@
 %if 0%{?fedora}
-  %bcond_without python3
-  %bcond_without python2
+	%bcond_without python3
+	%bcond_without python2
 %else
-  %if 0%{?rhel} > 7
-    %bcond_with    python2
-    %bcond_without python3
-  %else
-    %bcond_without python2
-    %bcond_with    python3
-  %endif
+	%if 0%{?rhel} > 7
+		%bcond_with    python2
+		%bcond_without python3
+	%else
+		%bcond_without python2
+		%bcond_with    python3
+	%endif
 %endif
 
 %bcond_without check
@@ -21,8 +21,9 @@ programming language. At its core it fully implements the Python DB \
 API 2.0 specifications. Several extensions allow access to many of the \
 features offered by PostgreSQL.
 
-%global python_runtimes	%{?with_python2:python2 %{?with_debugrpms:python2-debug}} \\\
-                        %{?with_python3:python3 %{?with_debugrpms:python3-debug}}
+%global python_runtimes	\\\
+	%{?with_python2:python2 %{?with_debugrpms:python2-debug}} \\\
+	%{?with_python3:python3 %{?with_debugrpms:python3-debug}}
 
 %{!?with_python2:%{!?with_python3:%{error:one python version needed}}}
 
@@ -47,8 +48,8 @@ Source0:	http://www.psycopg.org/psycopg/tarballs/PSYCOPG-2-7/psycopg2-%{version}
 %{?with_python2:BuildRequires:	%{?with_debugrpms:/usr/bin/python2-debug} python2-devel}
 %{?with_python3:BuildRequires:	%{?with_debugrpms:/usr/bin/python3-debug} python3-devel}
 
-BuildRequires:  gcc
-BuildRequires: pkgconfig(libpq)
+BuildRequires:	gcc
+BuildRequires:	pkgconfig(libpq)
 
 # For testsuite
 %if %{with check}

@@ -11,7 +11,7 @@
 	%endif
 %endif
 
-%bcond_without check
+%bcond_with check
 %bcond_without debugrpms
 
 %global srcname	psycopg2
@@ -49,7 +49,7 @@ Source0:	http://www.psycopg.org/psycopg/tarballs/PSYCOPG-2-7/psycopg2-%{version}
 %{?with_python3:BuildRequires:	%{?with_debugrpms:/usr/bin/python3-debug} python3-devel}
 
 BuildRequires:	gcc
-BuildRequires:	pkgconfig(libpq)
+BuildRequires:	postgresql-devel
 
 # For testsuite
 %if %{with check}
